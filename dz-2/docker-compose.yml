@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  server:
+    build: Server/
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+    ports:
+      - 5000:5000
+    volumes:
+      - ./server-volume:/templates
+    restart: unless-stopped
+
+  client:
+    build: client/
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+    command: python ./client.py
+    network_mode: host
+    depends_on: 
+      - server
+    restart: unless-stopped

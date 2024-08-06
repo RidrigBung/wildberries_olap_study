@@ -1,0 +1,14 @@
+__pycache__/
+.idea
+/commons/
+.vs/
+.DS_Store
+credentials.json
+/docker_clickhouse/data_dir
+/docker_clickhouse/logs
+/docker_kafka//zookeeper-data
+/docker_kafka//zookeeper-logs
+/docker_kafka/kafka-data
+/docker_kafka/kafka-logs
+/docker-spark/spark-data
+/Streams/credentials.json

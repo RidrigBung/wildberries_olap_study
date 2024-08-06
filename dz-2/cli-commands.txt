@@ -1,0 +1,21 @@
+Task 2:
+docker build -t myserver ./Server
+docker build -t myclient ./client
+
+docker run --cpus="1" -m 256m --restart=unless-stopped --name myserver -dp 5000:5000 -v ./server-volume:/templates myserver
+docker run --cpus="1" -m 256m --restart=unless-stopped --name myclient -d --network=host myclient
+
+docker restart myserver
+docker restart myclient
+
+docker stop myserver
+docker stop myclient
+
+Task 3:
+docker-compose up -d
+
+docker-compose restart
+
+docker-compose down
+
+docker container prune
