@@ -41,15 +41,17 @@ client_pg = psycopg2.connect(host=data['postgres'][0]['host'],
 
 def main():
     #click
+    source_db = "default"
     db = "report"
     table = "shk_lost_emp"
 
     sql = f'''
         insert into {db}.{table}
-            select toDate(issued_dt) dt_date
-                , wh_id
-                , count(shk_id) qty_issued
-            from assembly_task_issued
+            select shk_id
+                 , new_shk_id
+                 , lostreason_id
+                 , operation_dt
+            from {source_db}.{table}
             group by dt_date, wh_id
     '''
 
