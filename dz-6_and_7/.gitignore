@@ -1,3 +1,4 @@
 ./docker-airflow/dags
 ./docker-airflow/logs
 ./docker-airflow/plugins
+./docker-postgresql/postgresql_data
