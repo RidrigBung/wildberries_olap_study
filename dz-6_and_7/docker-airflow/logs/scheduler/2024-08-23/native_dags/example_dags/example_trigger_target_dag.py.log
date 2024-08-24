@@ -1,0 +1,5 @@
+[2024-08-23T11:44:43.835+0000] {processor.py:161} INFO - Started process (PID=76) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_trigger_target_dag.py
+[2024-08-23T11:44:43.836+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_trigger_target_dag.py for tasks to queue
+[2024-08-23T11:44:43.847+0000] {logging_mixin.py:188} INFO - [2024-08-23T11:44:43.846+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_trigger_target_dag.py
+[2024-08-23T11:44:43.859+0000] {processor.py:840} INFO - DAG(s) 'example_trigger_target_dag' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_trigger_target_dag.py
+[2024-08-23T11:44:44.032+0000] {logging_mixin.py:188} INFO - [2024-08-23T11:44:44.032+0000] {process_utils.py:263} INFO - Waiting up to 5 seconds for processes to exit...
