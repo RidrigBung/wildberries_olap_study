@@ -1,0 +1,100 @@
+[2024-08-24T10:38:00.691+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-08-24T10:38:00.709+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: report_shk_lost_emp.report_thefts manual__2024-08-24T10:37:59.620716+00:00 [queued]>
+[2024-08-24T10:38:00.714+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: report_shk_lost_emp.report_thefts manual__2024-08-24T10:37:59.620716+00:00 [queued]>
+[2024-08-24T10:38:00.715+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 2
+[2024-08-24T10:38:00.724+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): report_thefts> on 2024-08-24 10:37:59.620716+00:00
+[2024-08-24T10:38:00.729+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61: DeprecationWarning: This process (pid=219) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2024-08-24T10:38:00.730+0000] {standard_task_runner.py:63} INFO - Started process 221 to run task
+[2024-08-24T10:38:00.730+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'report_shk_lost_emp', 'report_thefts', 'manual__2024-08-24T10:37:59.620716+00:00', '--job-id', '15', '--raw', '--subdir', 'DAGS_FOLDER/dag_script.py', '--cfg-path', '/tmp/tmppyomu_9x']
+[2024-08-24T10:38:00.731+0000] {standard_task_runner.py:91} INFO - Job 15: Subtask report_thefts
+[2024-08-24T10:38:00.759+0000] {task_command.py:426} INFO - Running <TaskInstance: report_shk_lost_emp.report_thefts manual__2024-08-24T10:37:59.620716+00:00 [running]> on host 6d812cee5419
+[2024-08-24T10:38:00.808+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Babanin' AIRFLOW_CTX_DAG_ID='report_shk_lost_emp' AIRFLOW_CTX_TASK_ID='report_thefts' AIRFLOW_CTX_EXECUTION_DATE='2024-08-24T10:37:59.620716+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-08-24T10:37:59.620716+00:00'
+[2024-08-24T10:38:00.809+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-08-24T10:38:00.812+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-08-24T10:38:00.812+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 235, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 252, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/dag_script.py", line 60, in main
+    client_ch.execute(sql)
+  File "/home/airflow/.local/lib/python3.12/site-packages/clickhouse_driver/client.py", line 382, in execute
+    rv = self.process_ordinary_query(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/clickhouse_driver/client.py", line 580, in process_ordinary_query
+    return self.receive_result(with_column_types=with_column_types,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/clickhouse_driver/client.py", line 212, in receive_result
+    return result.get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/clickhouse_driver/numpy/result.py", line 36, in get_result
+    for packet in self.packet_generator:
+  File "/home/airflow/.local/lib/python3.12/site-packages/clickhouse_driver/client.py", line 228, in packet_generator
+    packet = self.receive_packet()
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/clickhouse_driver/client.py", line 245, in receive_packet
+    raise packet.exception
+clickhouse_driver.errors.ServerException: Code: 47.
+DB::Exception: Missing columns: 'dt_date' 'wh_id' while processing query: 'SELECT shk_id, new_shk_id, lostreason_id, operation_dt FROM default.Shk_LostPost WHERE operation_dt > (_CAST(0, 'Nullable(DateTime)') AS _subquery17) GROUP BY dt_date, wh_id', required columns: 'new_shk_id' 'lostreason_id' 'operation_dt' 'shk_id' 'wh_id' 'dt_date', maybe you meant: ['new_shk_id','lostreason_id','operation_dt','shk_id','shk_id']. Stack trace:
+
+0. DB::Exception::Exception(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, int, bool) @ 0xa82d07a in /usr/bin/clickhouse
+1. DB::TreeRewriterResult::collectUsedColumns(std::__1::shared_ptr<DB::IAST> const&, bool) @ 0x13c60937 in /usr/bin/clickhouse
+2. DB::TreeRewriter::analyzeSelect(std::__1::shared_ptr<DB::IAST>&, DB::TreeRewriterResult&&, DB::SelectQueryOptions const&, std::__1::vector<DB::TableWithColumnNamesAndTypes, std::__1::allocator<DB::TableWithColumnNamesAndTypes> > const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > > const&, std::__1::shared_ptr<DB::TableJoin>) const @ 0x13c639ef in /usr/bin/clickhouse
+3. ? @ 0x13a6a260 in /usr/bin/clickhouse
+4. DB::InterpreterSelectQuery::InterpreterSelectQuery(std::__1::shared_ptr<DB::IAST> const&, std::__1::shared_ptr<DB::Context const>, std::__1::optional<DB::Pipe>, std::__1::shared_ptr<DB::IStorage> const&, DB::SelectQueryOptions const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > > const&, std::__1::shared_ptr<DB::StorageInMemoryMetadata const> const&, std::__1::unordered_map<DB::PreparedSetKey, std::__1::shared_ptr<DB::Set>, DB::PreparedSetKey::Hash, std::__1::equal_to<DB::PreparedSetKey>, std::__1::allocator<std::__1::pair<DB::PreparedSetKey const, std::__1::shared_ptr<DB::Set> > > >) @ 0x13a66cca in /usr/bin/clickhouse
+5. DB::InterpreterSelectQuery::InterpreterSelectQuery(std::__1::shared_ptr<DB::IAST> const&, std::__1::shared_ptr<DB::Context const>, DB::SelectQueryOptions const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > > const&) @ 0x13a65594 in /usr/bin/clickhouse
+6. DB::InterpreterSelectWithUnionQuery::buildCurrentChildInterpreter(std::__1::shared_ptr<DB::IAST> const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > > const&) @ 0x13abea62 in /usr/bin/clickhouse
+7. DB::InterpreterSelectWithUnionQuery::InterpreterSelectWithUnionQuery(std::__1::shared_ptr<DB::IAST> const&, std::__1::shared_ptr<DB::Context const>, DB::SelectQueryOptions const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > > const&) @ 0x13abd150 in /usr/bin/clickhouse
+8. DB::InterpreterInsertQuery::execute() @ 0x13a4c3c6 in /usr/bin/clickhouse
+9. ? @ 0x13d1434c in /usr/bin/clickhouse
+10. DB::executeQuery(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, std::__1::shared_ptr<DB::Context>, bool, DB::QueryProcessingStage::Enum) @ 0x13d11e55 in /usr/bin/clickhouse
+11. DB::TCPHandler::runImpl() @ 0x147f050f in /usr/bin/clickhouse
+12. DB::TCPHandler::run() @ 0x14804259 in /usr/bin/clickhouse
+13. Poco::Net::TCPServerConnection::start() @ 0x1745e52f in /usr/bin/clickhouse
+14. Poco::Net::TCPServerDispatcher::run() @ 0x17460981 in /usr/bin/clickhouse
+15. Poco::PooledThread::run() @ 0x17611609 in /usr/bin/clickhouse
+16. Poco::ThreadImpl::runnableEntry(void*) @ 0x1760ed00 in /usr/bin/clickhouse
+17. ? @ 0x7f01b31a5609 in ?
+18. __clone @ 0x7f01b30cc293 in ?
+
+[2024-08-24T10:38:00.819+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=report_shk_lost_emp, task_id=report_thefts, run_id=manual__2024-08-24T10:37:59.620716+00:00, execution_date=20240824T103759, start_date=20240824T103800, end_date=20240824T103800
+[2024-08-24T10:38:00.827+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 15 for task report_thefts (Code: 47.
+DB::Exception: Missing columns: 'dt_date' 'wh_id' while processing query: 'SELECT shk_id, new_shk_id, lostreason_id, operation_dt FROM default.Shk_LostPost WHERE operation_dt > (_CAST(0, 'Nullable(DateTime)') AS _subquery17) GROUP BY dt_date, wh_id', required columns: 'new_shk_id' 'lostreason_id' 'operation_dt' 'shk_id' 'wh_id' 'dt_date', maybe you meant: ['new_shk_id','lostreason_id','operation_dt','shk_id','shk_id']. Stack trace:
+
+0. DB::Exception::Exception(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, int, bool) @ 0xa82d07a in /usr/bin/clickhouse
+1. DB::TreeRewriterResult::collectUsedColumns(std::__1::shared_ptr<DB::IAST> const&, bool) @ 0x13c60937 in /usr/bin/clickhouse
+2. DB::TreeRewriter::analyzeSelect(std::__1::shared_ptr<DB::IAST>&, DB::TreeRewriterResult&&, DB::SelectQueryOptions const&, std::__1::vector<DB::TableWithColumnNamesAndTypes, std::__1::allocator<DB::TableWithColumnNamesAndTypes> > const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > > const&, std::__1::shared_ptr<DB::TableJoin>) const @ 0x13c639ef in /usr/bin/clickhouse
+3. ? @ 0x13a6a260 in /usr/bin/clickhouse
+4. DB::InterpreterSelectQuery::InterpreterSelectQuery(std::__1::shared_ptr<DB::IAST> const&, std::__1::shared_ptr<DB::Context const>, std::__1::optional<DB::Pipe>, std::__1::shared_ptr<DB::IStorage> const&, DB::SelectQueryOptions const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > > const&, std::__1::shared_ptr<DB::StorageInMemoryMetadata const> const&, std::__1::unordered_map<DB::PreparedSetKey, std::__1::shared_ptr<DB::Set>, DB::PreparedSetKey::Hash, std::__1::equal_to<DB::PreparedSetKey>, std::__1::allocator<std::__1::pair<DB::PreparedSetKey const, std::__1::shared_ptr<DB::Set> > > >) @ 0x13a66cca in /usr/bin/clickhouse
+5. DB::InterpreterSelectQuery::InterpreterSelectQuery(std::__1::shared_ptr<DB::IAST> const&, std::__1::shared_ptr<DB::Context const>, DB::SelectQueryOptions const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > > const&) @ 0x13a65594 in /usr/bin/clickhouse
+6. DB::InterpreterSelectWithUnionQuery::buildCurrentChildInterpreter(std::__1::shared_ptr<DB::IAST> const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > > const&) @ 0x13abea62 in /usr/bin/clickhouse
+7. DB::InterpreterSelectWithUnionQuery::InterpreterSelectWithUnionQuery(std::__1::shared_ptr<DB::IAST> const&, std::__1::shared_ptr<DB::Context const>, DB::SelectQueryOptions const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > > > const&) @ 0x13abd150 in /usr/bin/clickhouse
+8. DB::InterpreterInsertQuery::execute() @ 0x13a4c3c6 in /usr/bin/clickhouse
+9. ? @ 0x13d1434c in /usr/bin/clickhouse
+10. DB::executeQuery(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, std::__1::shared_ptr<DB::Context>, bool, DB::QueryProcessingStage::Enum) @ 0x13d11e55 in /usr/bin/clickhouse
+11. DB::TCPHandler::runImpl() @ 0x147f050f in /usr/bin/clickhouse
+12. DB::TCPHandler::run() @ 0x14804259 in /usr/bin/clickhouse
+13. Poco::Net::TCPServerConnection::start() @ 0x1745e52f in /usr/bin/clickhouse
+14. Poco::Net::TCPServerDispatcher::run() @ 0x17460981 in /usr/bin/clickhouse
+15. Poco::PooledThread::run() @ 0x17611609 in /usr/bin/clickhouse
+16. Poco::ThreadImpl::runnableEntry(void*) @ 0x1760ed00 in /usr/bin/clickhouse
+17. ? @ 0x7f01b31a5609 in ?
+18. __clone @ 0x7f01b30cc293 in ?
+; 221)
+[2024-08-24T10:38:00.863+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 1
+[2024-08-24T10:38:00.876+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-08-24T10:38:00.877+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

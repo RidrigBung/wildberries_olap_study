@@ -21,7 +21,7 @@ dag = DAG(
     max_active_runs=1
 )
 
-with open('/opt/docker-airflow/dags/credentials.json') as json_file:
+with open('/opt/airflow/dags/credentials.json') as json_file:
     data = json.load(json_file)
 
 client_ch = Client(data['clickhouse'][0]['host'],
@@ -42,29 +42,31 @@ client_pg = psycopg2.connect(host=data['postgres'][0]['host'],
 def main():
     #click
     source_db = "default"
+    source_table = "Shk_LostPost"
     db = "report"
     table = "shk_lost_emp"
 
     sql = f'''
         insert into {db}.{table}
-            select shk_id
-                 , new_shk_id
-                 , lostreason_id
-                 , operation_dt
-            from {source_db}.{table}
-            group by dt_date, wh_id
+        select shk_id
+             , new_shk_id
+             , lostreason_id
+             , operation_dt
+        from {source_db}.{source_table}
+        where operation_dt > (select max(operation_dt) from {db}.{table})
+          and contragent_code = 'EMP'
+        order by operation_dt desc
+        limit 1 by shk_id
     '''
 
     client_ch.execute(sql)
-    
-    main_table = "report.issued_qty"
 
     query = f'''
-        select now() dt_load
-            , dt_date
-            , wh_id
-            , qty_issued
-        from {main_table} final
+        select shk_id
+             , new_shk_id
+             , lostreason_id
+             , operation_dt
+        from {db}.{table} 
     '''
 
     df = client_ch.query_dataframe(query)

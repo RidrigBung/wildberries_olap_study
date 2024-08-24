@@ -20,17 +20,17 @@ BEGIN
                                                     new_shk_id,
                                                     lostreason_id,
                                                     operation_dt)
-    SELECT s.dt_date,
-           s.wh_id,
-           s.sum_penalty,
-           s.sum_return
+    SELECT s.shk_id,
+           s.new_shk_id,
+           s.lostreason_id,
+           s.operation_dt
     FROM JSON_TO_RECORDSET(_src) AS s(dt_date       Bigint,
                                       wh_id         Bigint,
                                       lostreason_id Smallint,
                                       operation_dt  Date)
     ON CONFLICT (shk_id) DO UPDATE
     SET new_shk_id = EXCLUDED.new_shk_id,
-        lostreason_id  = lostreason_id.sum_return,
-        operation_dt  = EXCLUDED.operation_dt;
+        lostreason_id = EXCLUDED.lostreason_id,
+        operation_dt = EXCLUDED.operation_dt;
 END;
 $$;

@@ -12,17 +12,17 @@
 > dockerd-compose run -d
 
 Также добавим контейнеры сеть airflow в контейнера clickhouse и postgresql с помощью команд:
-> docker network connect airflow-default postgresql
-> docker network connect airflow-default clickhouse 
+> docker network connect docker-airflow_default postgresql
+> docker network connect docker-airflow_default clickhouse
 
 Выполним команды из файлов ./docker-clickhouse/click_script.sql и ./docker-postgresql/postgresql_script.sql 
 в терминалах поднятых контейнеров clickhouse и postgresql соответственно. Для выолнения команд 
 подключаемся через localhost по соответствующему контейнеру порту и заходим под созданным в 
 docker-compose.yml файле юзером.
 
-Пишем даг ./docker-airflow/dags/dag_script.py, запускаем в интерфейсе airflow,
-который видим по адресу localhost:8080, проверяем корректность работы.
-<img src='./images/airflow.jpg'>
+Пишем DAG: <a href="./docker-airflow/dags/dag_script.py">dag_script</a>, скачиваем в контейнеры airflow недостающие библиотеки,
+запускаем в интерфейсе airflow, который видим по адресу localhost:8080, написанный dag и проверяем корректность работы.
+<img src='./images/airflow.png'>
 
 После успешного запуска дага идем проверять результат в таблицу контейнера postgresql
-<img src='./images/postgresql.jpg'>
+<img src='./images/postgresql.png'>
